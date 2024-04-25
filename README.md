@@ -1,6 +1,33 @@
 <h1 align="center">PassIn (Event Manager) - JAVA</h1>
 
-### **Under Development**
+<h2 align="center" style="color:orange;">** Under Development **</h1>
+
+<div style="font-size: 48px; font-weight: bold; text-align: center;">
+  <span style="margin-right: 5px">**</span>
+
+<span style="color: orange;">U</span>
+<span style="color: black;">n</span>
+<span style="color: orange;">d</span>
+<span style="color: black;">e</span>
+<span style="color: orange;">r</span>
+
+<span style="margin-left: 10px"> </span>
+
+<span style="color: black;">D</span>
+<span style="color: orange;">e</span>
+<span style="color: black;">v</span>
+<span style="color: orange;">e</span>
+<span style="color: black;">l</span>
+<span style="color: orange;">o</span>
+<span style="color: black;">p</span>
+<span style="color: orange;">m</span>
+<span style="color: black;">e</span>
+<span style="color: orange;">n</span>
+<span style="color: black;">t</span>
+
+<span style="margin-left: 5px">\*\*</span>
+
+</div>
 
 ## About this Project
 
