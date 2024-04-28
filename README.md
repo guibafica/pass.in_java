@@ -19,9 +19,16 @@ This is a Java project, which simulates an event manager. In this application, t
   - List an attendee's badge information.
   - Create the attendee check-in.
 
-<!-- ## Used Techs
+## Used Techs
 
--  -->
+- Framework ( Spring ): It establishes a series of standards and facilitates the development of new applications.
+- Spring Web WEB: Spring submodule, to create web applications.
+- Spring initializer: Base creation of the project.
+- Spring Data JPA SQL: Spring submodule, for data persistence in SQL database.
+- Flyway Migration SQL: Creation of migrations and database version control.
+- Spring Boot DevTools: Development features.
+- Lombok: Lib for boilerplate code generation.
+- HyperSQL: Open source database server, written entirely in the Java language.
 
 # Author
 
