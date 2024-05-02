@@ -1,5 +1,6 @@
 package guilhermebafica.com.br.passin.controllers;
 
+import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
 import guilhermebafica.com.br.passin.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventController {
     private final EventService service;
     @GetMapping("/{eventId}")
-    public ResponseEntity<String> getEvent(@PathVariable String eventId) {
-        this.service.getEventDetail(eventId);
+    public ResponseEntity<EventResponseDTO> getEvent(@PathVariable String eventId) {
+        EventResponseDTO event = this.service.getEventDetail(eventId);
 
-        return ResponseEntity.ok("Success (event)");
+        return ResponseEntity.ok(event);
     }
 }
