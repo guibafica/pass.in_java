@@ -2,6 +2,8 @@ package guilhermebafica.com.br.passin.services;
 
 import guilhermebafica.com.br.passin.domain.attendee.Attendee;
 import guilhermebafica.com.br.passin.domain.event.Event;
+import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
+import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
 import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 import guilhermebafica.com.br.passin.repositories.EventRepository;
@@ -9,6 +11,7 @@ import guilhermebafica.com.br.passin.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.List;
 
 @Service
@@ -22,5 +25,28 @@ public class EventService {
         List<Attendee> attendeeList = this.attendeeRepository.findByEventId(eventId);
 
         return new EventResponseDTO(event, attendeeList.size());
+    }
+
+    public EventIdDTO createEvent(EventRequestDTO eventDTO) {
+        Event newEvent = new Event();
+
+        newEvent.setTitle(eventDTO.title());
+        newEvent.setDetail(eventDTO.detail());
+        newEvent.setMaximumAttendees(eventDTO.maximumAttendees());
+        newEvent.setSlug(this.createSlug(eventDTO.title()));
+
+        this.eventRepository.save(newEvent);
+
+        return new EventIdDTO(newEvent.getId());
+    }
+
+    private String createSlug(String text) {
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+
+        return normalized
+            .replaceAll("[\\p{InCOMBINING_DIACRITICAL_MARKS}]", "") // Remove accents
+            .replaceAll("[^\\w\\s]", "") // Remove everything that isn't letters and numbers
+            .replaceAll("\\s+", "-") // Replace all empty spaces with hyphen
+            .toLowerCase();
     }
 }
