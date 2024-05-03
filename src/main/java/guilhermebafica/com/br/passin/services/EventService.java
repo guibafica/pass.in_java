@@ -6,7 +6,6 @@ import guilhermebafica.com.br.passin.domain.event.exceptions.EventNotFoundExcept
 import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
 import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
-import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 import guilhermebafica.com.br.passin.repositories.EventRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,13 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
-    private final AttendeeRepository attendeeRepository;
+    private final AttendeeService attendeeService;
 
     public EventResponseDTO getEventDetail(String eventId) {
         Event event = this.eventRepository.findById(eventId).orElseThrow(
             () -> new EventNotFoundException("Event not found with this ID")
         );
-        List<Attendee> attendeeList = this.attendeeRepository.findByEventId(eventId);
+        List<Attendee> attendeeList = this.attendeeService.getAllAttendeesFromEvent(eventId);
 
         return new EventResponseDTO(event, attendeeList.size());
     }
