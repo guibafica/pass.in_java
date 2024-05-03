@@ -2,6 +2,7 @@ package guilhermebafica.com.br.passin.services;
 
 import guilhermebafica.com.br.passin.domain.attendee.Attendee;
 import guilhermebafica.com.br.passin.domain.event.Event;
+import guilhermebafica.com.br.passin.domain.event.exceptions.EventNotFoundException;
 import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
 import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
@@ -21,7 +22,9 @@ public class EventService {
     private final AttendeeRepository attendeeRepository;
 
     public EventResponseDTO getEventDetail(String eventId) {
-        Event event = this.eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found with this ID"));
+        Event event = this.eventRepository.findById(eventId).orElseThrow(
+            () -> new EventNotFoundException("Event not found with this ID")
+        );
         List<Attendee> attendeeList = this.attendeeRepository.findByEventId(eventId);
 
         return new EventResponseDTO(event, attendeeList.size());
