@@ -7,6 +7,7 @@ import guilhermebafica.com.br.passin.dto.attendee.AttendeeListResponseDTO;
 import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 
 import guilhermebafica.com.br.passin.repositories.CheckinRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AttendeeService {
-    private AttendeeRepository attendeeRepository;
-    private CheckinRepository checkinRepository;
+    // "final" is used because there isn't a constructor in this class
+    // or I can use "@AllArgsConstructor"
+    private final AttendeeRepository attendeeRepository;
+    private final CheckinRepository checkinRepository;
 
     public List<Attendee> getAllAttendeesFromEvent(String eventId) {
         return this.attendeeRepository.findByEventId(eventId);
