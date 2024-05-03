@@ -2,6 +2,9 @@ package guilhermebafica.com.br.passin.dto.event;
 
 import guilhermebafica.com.br.passin.domain.event.Event;
 
+import lombok.Getter;
+
+@Getter
 public class EventResponseDTO {
     EventDetailDTO event;
 
@@ -10,7 +13,7 @@ public class EventResponseDTO {
         this.event = new EventDetailDTO(
             event.getId(),
             event.getTitle(),
-            event.getDetail(),
+            event.getDetails(),
             event.getSlug(),
             event.getMaximumAttendees(),
             numberOfAttendees
