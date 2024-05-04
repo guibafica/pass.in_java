@@ -42,6 +42,10 @@ public class EventService {
         return new EventIdDTO(newEvent.getId());
     }
 
+    public void registerAttendeeOnEvent() {
+        this.attendeeService.verifyAttendeeSubscription();
+    }
+
     private String createSlug(String text) {
         String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
 

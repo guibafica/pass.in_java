@@ -1,13 +1,13 @@
 package guilhermebafica.com.br.passin.services;
 
 import guilhermebafica.com.br.passin.domain.attendee.Attendee;
+import guilhermebafica.com.br.passin.domain.attendee.exceptions.AttendeeAlreadyExistException;
 import guilhermebafica.com.br.passin.domain.checkin.CheckIn;
 import guilhermebafica.com.br.passin.dto.attendee.AttendeeDetailsDTO;
 import guilhermebafica.com.br.passin.dto.attendee.AttendeeListResponseDTO;
 import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 
 import guilhermebafica.com.br.passin.repositories.CheckinRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +46,12 @@ public class AttendeeService {
         }).toList();
 
         return new AttendeeListResponseDTO(attendeeDetailsList);
+    }
+
+    public void verifyAttendeeSubscription(String email, String eventId) {
+        Optional<Attendee> isAttendeeRegistered = this.attendeeRepository.findByEventIdAndEmail(eventId, email);
+
+        if (isAttendeeRegistered.isPresent()) throw new AttendeeAlreadyExistException("Attendee is already registered");
     }
 
     public Attendee registerAttendee(Attendee newAttendee) {
