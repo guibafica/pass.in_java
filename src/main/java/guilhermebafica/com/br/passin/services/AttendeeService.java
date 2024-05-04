@@ -47,4 +47,10 @@ public class AttendeeService {
 
         return new AttendeeListResponseDTO(attendeeDetailsList);
     }
+
+    public Attendee registerAttendee(Attendee newAttendee) {
+        this.attendeeRepository.save(newAttendee);
+
+        return newAttendee;
+    }
 }
