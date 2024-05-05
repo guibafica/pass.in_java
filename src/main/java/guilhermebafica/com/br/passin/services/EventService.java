@@ -4,6 +4,8 @@ import guilhermebafica.com.br.passin.domain.attendee.Attendee;
 import guilhermebafica.com.br.passin.domain.event.Event;
 import guilhermebafica.com.br.passin.domain.event.exceptions.EventFullException;
 import guilhermebafica.com.br.passin.domain.event.exceptions.EventNotFoundException;
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeIdDTO;
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
 import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -43,8 +46,8 @@ public class EventService {
         return new EventIdDTO(newEvent.getId());
     }
 
-    public void registerAttendeeOnEvent(String eventId) {
-        this.attendeeService.verifyAttendeeSubscription("", eventId);
+    public AttendeeIdDTO registerAttendeeOnEvent(String eventId, AttendeeRequestDTO attendeeRequestDTO) {
+        this.attendeeService.verifyAttendeeSubscription(attendeeRequestDTO.email(), eventId);
 
         Event event = this.eventRepository.findById(eventId).orElseThrow(
                 () -> new EventNotFoundException("Event not found with this ID")
@@ -53,8 +56,18 @@ public class EventService {
 
         if (event.getMaximumAttendees() <= attendeeList.size()) throw new EventFullException("Event is full");
 
+        Attendee newAttendee = new Attendee();
 
+        newAttendee.setName(attendeeRequestDTO.name());
+        newAttendee.setEmail(attendeeRequestDTO.email());
+        newAttendee.setEvent(event);
+        newAttendee.setCreatedAt(LocalDateTime.now());
+
+        this.attendeeService.registerAttendee(newAttendee);
+
+        return new AttendeeIdDTO(newAttendee.getId());
     }
+
 
     private String createSlug(String text) {
         String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
