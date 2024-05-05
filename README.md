@@ -32,6 +32,6 @@ This is a Java project, which simulates an event manager. In this application, t
 
 # Author
 
-Made with 💜 by Guilherme Bafica 👋
+Made with 💚 by Guilherme Bafica 👋
 
 [![LinkedIn Badge](https://img.shields.io/badge/-GuilhermeBafica-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/guilhermebafica/)](https://www.linkedin.com/in/guilhermebafica/)
