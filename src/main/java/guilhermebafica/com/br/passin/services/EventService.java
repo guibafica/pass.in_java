@@ -2,6 +2,7 @@ package guilhermebafica.com.br.passin.services;
 
 import guilhermebafica.com.br.passin.domain.attendee.Attendee;
 import guilhermebafica.com.br.passin.domain.event.Event;
+import guilhermebafica.com.br.passin.domain.event.exceptions.EventFullException;
 import guilhermebafica.com.br.passin.domain.event.exceptions.EventNotFoundException;
 import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
 import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
@@ -42,8 +43,17 @@ public class EventService {
         return new EventIdDTO(newEvent.getId());
     }
 
-    public void registerAttendeeOnEvent() {
-        this.attendeeService.verifyAttendeeSubscription();
+    public void registerAttendeeOnEvent(String eventId) {
+        this.attendeeService.verifyAttendeeSubscription("", eventId);
+
+        Event event = this.eventRepository.findById(eventId).orElseThrow(
+                () -> new EventNotFoundException("Event not found with this ID")
+        );
+        List<Attendee> attendeeList = this.attendeeService.getAllAttendeesFromEvent(eventId);
+
+        if (event.getMaximumAttendees() <= attendeeList.size()) throw new EventFullException("Event is full");
+
+
     }
 
     private String createSlug(String text) {
