@@ -1,6 +1,8 @@
 package guilhermebafica.com.br.passin.controllers;
 
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeIdDTO;
 import guilhermebafica.com.br.passin.dto.attendee.AttendeeListResponseDTO;
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventIdDTO;
 import guilhermebafica.com.br.passin.dto.event.EventRequestDTO;
 import guilhermebafica.com.br.passin.dto.event.EventResponseDTO;
@@ -33,6 +35,15 @@ public class EventController {
         var uri = uriComponentsBuilder.path("/events/{id}").buildAndExpand(eventIdDTO.eventId()).toUri();
 
         return ResponseEntity.created(uri).body(eventIdDTO);
+    }
+
+    @PostMapping("/{eventId}/attendees")
+    public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable String eventId, @RequestBody AttendeeRequestDTO body, UriComponentsBuilder uriComponentsBuilder) {
+        AttendeeIdDTO attendeeIdDTO = this.eventService.registerAttendeeOnEvent(eventId, body);
+
+        var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/badge").buildAndExpand(attendeeIdDTO.attendeeId()).toUri();
+
+        return ResponseEntity.created(uri).body(attendeeIdDTO);
     }
 
     @GetMapping("/attendees/{eventId}")
