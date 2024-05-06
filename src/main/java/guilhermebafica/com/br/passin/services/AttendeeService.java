@@ -25,7 +25,7 @@ public class AttendeeService {
     // "final" is used because there isn't a constructor in this class
     // or I can use "@AllArgsConstructor"
     private final AttendeeRepository attendeeRepository;
-    private final CheckinRepository checkinRepository;
+    private final CheckInService checkInService;
 
     public List<Attendee> getAllAttendeesFromEvent(String eventId) {
         return this.attendeeRepository.findByEventId(eventId);
@@ -35,7 +35,7 @@ public class AttendeeService {
         List<Attendee> attendeeList = this.getAllAttendeesFromEvent(eventId);
 
         List<AttendeeDetailsDTO> attendeeDetailsList = attendeeList.stream().map(attendee -> {
-            Optional<CheckIn> checkIn = this.checkinRepository.findByAttendeeId(attendee.getId());
+            Optional<CheckIn> checkIn = this.checkInService.getCheckIn(attendee.getId());
 
             // Same as a ternary if
             LocalDateTime checkedInAt = checkIn.<LocalDateTime>map(CheckIn::getCreatedAt).orElse(null);
@@ -64,10 +64,14 @@ public class AttendeeService {
         return newAttendee;
     }
 
+    public void checkInAttendee(String attendeeId) {
+        Attendee attendee = this.getAttendee(attendeeId);
+
+        this.checkInService.registerCheckIn(attendee);
+    }
+
     public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
-        Attendee attendee = this.attendeeRepository.findById(attendeeId).orElseThrow(
-            () -> new AttendeeNotFoundException("Attendee not found with this ID")
-        );
+        Attendee attendee = this.getAttendee(attendeeId);
 
         var uri = uriComponentsBuilder
             .path("/attendees/{attendeeId}/check-in")
@@ -83,5 +87,11 @@ public class AttendeeService {
         );
 
         return new AttendeeBadgeResponseDTO(attendeeBadgeDTO);
+    }
+
+    private Attendee getAttendee(String attendeeId) {
+        return this.attendeeRepository.findById(attendeeId).orElseThrow(
+            () -> new AttendeeNotFoundException("Attendee not found with this ID")
+        );
     }
 }
