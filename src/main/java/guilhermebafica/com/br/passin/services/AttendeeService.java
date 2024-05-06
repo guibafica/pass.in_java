@@ -2,9 +2,12 @@ package guilhermebafica.com.br.passin.services;
 
 import guilhermebafica.com.br.passin.domain.attendee.Attendee;
 import guilhermebafica.com.br.passin.domain.attendee.exceptions.AttendeeAlreadyExistException;
+import guilhermebafica.com.br.passin.domain.attendee.exceptions.AttendeeNotFoundException;
 import guilhermebafica.com.br.passin.domain.checkin.CheckIn;
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeBadgeResponseDTO;
 import guilhermebafica.com.br.passin.dto.attendee.AttendeeDetailsDTO;
 import guilhermebafica.com.br.passin.dto.attendee.AttendeeListResponseDTO;
+import guilhermebafica.com.br.passin.dto.attendee.AttendeeBadgeDTO;
 import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 
 import guilhermebafica.com.br.passin.repositories.CheckinRepository;
@@ -58,5 +61,15 @@ public class AttendeeService {
         this.attendeeRepository.save(newAttendee);
 
         return newAttendee;
+    }
+
+    public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId) {
+        Attendee attendee = this.attendeeRepository.findById(attendeeId).orElseThrow(
+            () -> new AttendeeNotFoundException("Attendee not found with this ID")
+        );
+
+        AttendeeBadgeDTO attendeeBadgeDTO = new AttendeeBadgeDTO(attendee.getName(), attendee.getEmail(), "", attendee.getEvent().getId());
+
+        return new AttendeeBadgeResponseDTO(attendeeBadgeDTO);
     }
 }
