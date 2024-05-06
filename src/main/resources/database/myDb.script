@@ -29,7 +29,7 @@ SET FILES NIO TRUE
 SET FILES NIO SIZE 256
 SET FILES LOG TRUE
 SET FILES LOG SIZE 50
-SET FILES CHECK 2025
+SET FILES CHECK 2133
 SET DATABASE COLLATION "SQL_TEXT" PAD SPACE
 CREATE USER SA PASSWORD DIGEST 'd41d8cd98f00b204e9800998ecf8427e'
 ALTER USER SA SET LOCAL TRUE
@@ -58,6 +58,9 @@ INSERT INTO "flyway_schema_history" VALUES(1,'1','create-table-events','SQL','V1
 INSERT INTO "flyway_schema_history" VALUES(2,'2','create-table-attendees','SQL','V2__create-table-attendees.sql',1612960147,'SA','2024-04-30 09:55:09.096087',3,'1')
 INSERT INTO "flyway_schema_history" VALUES(3,'3','create-table-checkins','SQL','V3__create-table-checkins.sql',277259538,'SA','2024-04-30 09:55:09.125428',3,'1')
 INSERT INTO "flyway_schema_history" VALUES(4,'4','create-indexes','SQL','V4__create-indexes.sql',553901455,'SA','2024-04-30 09:55:09.141506',2,'1')
+INSERT INTO EVENTS VALUES('1b852004-f439-4cf4-9c61-ec090f600b5d','Small event','Just 1 position avaliable','small-event',1)
 INSERT INTO EVENTS VALUES('9bdbb04a-ad5a-4a4a-a25a-429d1ae50f0c','Rocketseat NLW','Detail descriptions detail descriptions','rocketseat-nlw',500)
 INSERT INTO EVENTS VALUES('d499e2ee-466f-4b76-8962-b88fcdd39687','Second event','test detail','second-event',100)
+INSERT INTO ATTENDEES VALUES('3a72fd86-e332-4945-996b-261309508c17','Guilherme Bafica','email@email.com','1b852004-f439-4cf4-9c61-ec090f600b5d','2024-05-06 10:18:50.657872')
+INSERT INTO ATTENDEES VALUES('89a5fb4d-833e-4e49-9a70-0b1ada07de9a','Guilherme Bafica','email@email.com','d499e2ee-466f-4b76-8962-b88fcdd39687','2024-05-06 10:12:24.576315')
 INSERT INTO ATTENDEES VALUES('d499e2ee-466f-4b76-8962-b88fcdd39687','Attendee name test','test@email.com','d499e2ee-466f-4b76-8962-b88fcdd39687',NULL)
