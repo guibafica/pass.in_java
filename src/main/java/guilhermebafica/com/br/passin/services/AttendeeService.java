@@ -13,6 +13,7 @@ import guilhermebafica.com.br.passin.repositories.AttendeeRepository;
 import guilhermebafica.com.br.passin.repositories.CheckinRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,12 +64,23 @@ public class AttendeeService {
         return newAttendee;
     }
 
-    public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId) {
+    public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
         Attendee attendee = this.attendeeRepository.findById(attendeeId).orElseThrow(
             () -> new AttendeeNotFoundException("Attendee not found with this ID")
         );
 
-        AttendeeBadgeDTO attendeeBadgeDTO = new AttendeeBadgeDTO(attendee.getName(), attendee.getEmail(), "", attendee.getEvent().getId());
+        var uri = uriComponentsBuilder
+            .path("/attendees/{attendeeId}/check-in")
+            .buildAndExpand(attendeeId)
+            .toUri()
+            .toString();
+
+        AttendeeBadgeDTO attendeeBadgeDTO = new AttendeeBadgeDTO(
+            attendee.getName(),
+            attendee.getEmail(),
+            uri,
+            attendee.getEvent().getId()
+        );
 
         return new AttendeeBadgeResponseDTO(attendeeBadgeDTO);
     }
